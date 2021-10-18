@@ -9,8 +9,12 @@ const client = new Twitter({
   access_token_secret: process.env.ACCESS_TOKEN_SECRET,
 });
 
+router.get("/", async (req, res, next) => {
+  res.send({ message: "This is API main page :)" });
+});
+
 // To get trending topics
-router.get("/trends", function (req, res, next) {
+router.get("/trends", async (req, res, next) => {
   //   /**
   //    * Stream statuses filtered by keyword
   //    * number of tweets per second depends on topic popularity
