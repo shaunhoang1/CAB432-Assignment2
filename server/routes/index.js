@@ -15,25 +15,29 @@ router.get("/", async (req, res, next) => {
 
 // To get trending topics
 router.get("/trends", async (req, res, next) => {
-  //   /**
-  //    * Stream statuses filtered by keyword
-  //    * number of tweets per second depends on topic popularity
-  //    **/
-  //   client.stream("statuses/filter", { track: "twitter" }, function (stream) {
-  //     stream.on("data", function (tweet) {
-  //       console.log(tweet.text);
-  //     });
-  //     stream.on("error", function (error) {
-  //       console.log(error);
-  //     });
-  //   });
-  client.get(
-    "search/tweets",
-    { q: "node.js" },
-    function (error, tweets, response) {
-      console.log(tweets);
-    }
-  );
+  try {
+    const id = req.query.woeid;
+    const trends = await client.get("trends/place.json", {
+      id,
+    });
+    res.send(trends);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// The route gets the WOEID for a particular location (latitude/longtitude)
+router.get("/near-me", async (req, res, next) => {
+  try {
+    const { lat, long } = req.query;
+    const response = await client.get("/trends/closest.json", {
+      lat,
+      long,
+    });
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
