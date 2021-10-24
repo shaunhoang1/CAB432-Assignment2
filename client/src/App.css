@@ -119,3 +119,9 @@ li:hover .tweet_volume {
   max-width: 960px;
   margin: auto;
 }
+
+.chart{
+  margin: auto;
+  height: 30%;
+  width: 30%;
+}
