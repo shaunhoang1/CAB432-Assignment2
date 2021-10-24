@@ -3,4 +3,5 @@ client/.idea
 server/node_modules
 server/.idea
 server/.env
+.idea
 node_modules
