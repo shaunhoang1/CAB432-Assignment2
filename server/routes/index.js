@@ -1,3 +1,5 @@
+// import { getSentiment } from "../components/nlp.js";
+const { getSentiment } = require("../components/nlp.js");
 var express = require("express");
 var router = express.Router();
 const Twitter = require("twitter");
@@ -38,6 +40,14 @@ router.get("/near-me", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+});
+
+router.post("/api/sentiment", (req, res) => {
+  const data = req.body.data;
+  console.log(data);
+  const sentiment = getSentiment(data);
+
+  return res.send({ sentiment });
 });
 
 module.exports = router;
