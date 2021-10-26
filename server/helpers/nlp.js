@@ -3,17 +3,16 @@ const { WordTokenizer, SentimentAnalyzer, PorterStemmer } = require("natural");
 const SpellCorrector = require("spelling-corrector");
 const stopword = require("stopword");
 
+const analyzer = new SentimentAnalyzer("English", PorterStemmer, "afinn");
+const tokenizer = new WordTokenizer();
+const spellCorrector = new SpellCorrector();
+spellCorrector.loadDictionary();
+
 // Calculate the sentiment score
 function getSentiment(str) {
   if (!str.trim()) {
     return 0;
   }
-
-  const tokenizer = new WordTokenizer();
-  const spellCorrector = new SpellCorrector();
-  spellCorrector.loadDictionary();
-
-  const analyzer = new SentimentAnalyzer("English", PorterStemmer, "afinn");
 
   const lexed = aposToLexForm(str)
     .toLowerCase()
@@ -32,4 +31,15 @@ function getSentiment(str) {
   return -1;
 }
 
+function getSentimentList(tweetList){
+  let sentimentList = Array(tweetList.length).fill(null);
+
+  tweetList.map((obj, index) => {
+    console.log("???", index)
+    sentimentList[index] = getSentiment(obj.text)
+  })
+  console.log(sentimentList)
+  return sentimentList;
+}
 module.exports.getSentiment = getSentiment;
+module.exports.getSentimentList = getSentimentList;
