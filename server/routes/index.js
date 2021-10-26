@@ -42,6 +42,20 @@ router.get("/near-me", async (req, res, next) => {
   }
 });
 
+// The route gets the data from the exact key word
+// https://developer.twitter.com/en/docs/twitter-api/v1/tweets/search/api-reference/get-search-tweets
+router.get("/search", async (req, res, next) => {
+  try {
+    const q = req.query.q;
+    const search = await client.get("search/tweets", {
+      q,
+    });
+    res.send(search);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/api/sentiment", (req, res) => {
   const data = req.body.data;
   console.log(data);

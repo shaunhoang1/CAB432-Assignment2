@@ -3,6 +3,7 @@ const { WordTokenizer, SentimentAnalyzer, PorterStemmer } = require("natural");
 const SpellCorrector = require("spelling-corrector");
 const stopword = require("stopword");
 
+// Calculate the sentiment score
 function getSentiment(str) {
   if (!str.trim()) {
     return 0;
