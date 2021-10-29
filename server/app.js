@@ -8,7 +8,6 @@ const logger = require("morgan");
 const indexRouter = require("./routes/index");
 const tweetRouter = require("./routes/getTweetList");
 
-
 const app = express();
 
 // view engine setup
@@ -23,6 +22,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 // app.use("/search", tweetRouter);
+
+// Serve Client as static pages
+app.use(express.static("../client/build"));
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
