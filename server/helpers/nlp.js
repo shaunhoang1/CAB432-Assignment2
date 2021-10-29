@@ -23,9 +23,9 @@ function getSentiment(str) {
   const fixedSpelling = tokenized.map((word) => spellCorrector.correct(word));
 
   const stopWordsRemoved = stopword.removeStopwords(fixedSpelling);
-
+  console.log("stopWordsRemoved", stopWordsRemoved)
   const analyzed = analyzer.getSentiment(stopWordsRemoved);
-
+  console.log("result", analyzed)
   if (analyzed >= 1) return 1; // positive
   if (analyzed === 0) return 0;
   return -1;

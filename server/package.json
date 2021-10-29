@@ -17,7 +17,8 @@
     "pug": "^3.0.2",
     "spelling-corrector": "^3.0.0",
     "stopword": "^1.0.11",
-    "twitter": "^1.7.1"
+    "twitter": "^1.7.1",
+    "twitter-v2": "^1.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.13"
