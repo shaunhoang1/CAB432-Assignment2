@@ -1,21 +1,11 @@
 #Use ubuntu as base
-FROM ubuntu
-
-#update 
-ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update
-
-#Install npm
-RUN apt-get install npm -y
-
-#Install nodemon 
-RUN npm i nodemon -g
+FROM node:14-alpine
 
 #Copy everything inside app directory
-COPY . /app
-
+COPY /client/build /client/build
+COPY /server /server
 #Install dependencies in server
-WORKDIR /app/server
+WORKDIR /server
 RUN npm i
 
 #Expose port to the world
