@@ -1,5 +1,3 @@
-const { getSentiment } = require("../helpers/nlp.js");
-const Twitter = require("twitter-v2");
 const express = require("express");
 const {getSentimentList} = require("../helpers/nlp");
 const Twitter2 = require("twitter-v2");

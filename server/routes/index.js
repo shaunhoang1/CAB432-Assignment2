@@ -1,4 +1,3 @@
-// import { getSentiment } from "../helpers/nlp.js";
 const {getSentiment} = require("../helpers/nlp.js");
 const express = require("express");
 const router = express.Router();
