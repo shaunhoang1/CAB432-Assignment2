@@ -1,4 +1,3 @@
-import {Card} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import PieChart from "./chart";
 import getSentiment from "../store/getSentiment";
@@ -61,11 +60,8 @@ export default function ListTrends({trends, trendChosen, setTrendChosen}) {
                                 </h3>
                             )}
                             {sentiment && (
-                                <Card >
-                                    <PieChart sentiment={sentiment} trend={trend.name}/>
-                                </Card>
+                                <PieChart sentiment={sentiment} trend={trend.name}/>
                             )}
-
                         </>
                     );
                 }
