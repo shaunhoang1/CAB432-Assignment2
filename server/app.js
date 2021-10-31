@@ -25,7 +25,7 @@ app.use("/api", tweetRouter);
 // app.use("/search", tweetRouter);
 
 // Serve Client as static pages
-// app.use(express.static("../client/build"));
+app.use(express.static("../client/build"));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
