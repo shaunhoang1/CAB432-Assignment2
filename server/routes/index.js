@@ -25,21 +25,21 @@ redisClient.on('error', (err) => {
 //   res.send({ message: "This is API main page :)" });
 // });
 
+// // To get trending topics
+// router.get("/trends", async (req, res, next) => {
+//     try {
+//         const id = req.query.woeid;
+//         const trends = await twitterClient.get("trends/place.json", {
+//             id,
+//         });
+//
+//         res.status(200).json(trends[0]);
+//     } catch (error) {
+//         next(error);
+//     }
+// });
 // To get trending topics
 router.get("/trends", async (req, res, next) => {
-    try {
-        const id = req.query.woeid;
-        const trends = await twitterClient.get("trends/place.json", {
-            id,
-        });
-
-        res.status(200).json(trends[0]);
-    } catch (error) {
-        next(error);
-    }
-});
-// To get trending topics
-router.get("/trends/redis", async (req, res, next) => {
 
     const id = req.query.woeid;
     const key = `trends-${id}`
@@ -72,6 +72,7 @@ router.get("/near-me", async (req, res, next) => {
             lat,
             long,
         });
+        console.log(response)
         res.send(response);
     } catch (error) {
         next(error);

@@ -12,9 +12,12 @@ function App() {
   const [q, setQ] = useState([]);
   const [trendChosen, setTrendChosen] = useState(-1);
   useEffect(() => {
-    getTrends(woeid)
-      .then((r) => setTrends(r.trends))
-      .catch((err) => console.log(err));
+    if(woeid !== 'near-me'){
+      getTrends(woeid)
+          .then((r) => setTrends(r.trends))
+          .catch((err) => console.log(err));
+
+    }
   }, [woeid]);
 
   function handleLocation() {
@@ -24,7 +27,12 @@ function App() {
           getTrendsNearMe(
             position.coords.latitude,
             position.coords.longitude
-          ).then((r) => setWoeid(r[0].woeid));
+          ).then((r) => {
+            setWoeid('near-me');
+            getTrends(r[0].woeid)
+                .then((r) => setTrends(r.trends))
+                .catch((err) => console.log(err));
+          });
         },
         (error) => {
           console.log(error.message);
@@ -47,7 +55,9 @@ function App() {
           onChange={(e) => {
             setWoeid(e.target.value);
             setTrendChosen(-1);
+            console.log(e.target.value);
           }}
+          value={woeid}
         >
           <option value="1">Worldwide</option>
           <option value="23424977">US</option>
@@ -59,6 +69,7 @@ function App() {
           <option value="1105779">Sydney, AU</option>
           <option value="1100661">Brisbane,AU</option>
           <option value="1236594">Hanoi,VN</option>
+          {woeid === 'near-me' && (<option disabled hidden value="near-me">NEAR-ME</option>)}
         </select>
         <div className="location" onClick={handleLocation}>
           <FaCrosshairs />
