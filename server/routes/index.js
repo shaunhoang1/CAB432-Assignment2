@@ -12,33 +12,19 @@ const twitterClient = new Twitter({
     access_token_secret: process.env.ACCESS_TOKEN_SECRET,
 });
 // This section will change for Cloud Services
-const redisClient = redis.createClient(); // Uncomment below for production
-// const redisClient = redis.createClient({
-//     host: "shaun-patrick-cluster.km2jzi.0001.apse2.cache.amazonaws.com",
-//     port: 6379
-// });
+// const redisClient = redis.createClient(); // Uncomment below for production
+const redisClient = redis.createClient({
+    host: "shaun-patrick-cluster.km2jzi.0001.apse2.cache.amazonaws.com",
+    port: 6379
+});
 redisClient.on('error', (err) => {
     console.log("Error", err);
 })
 
-// router.get("/", async (req, res, next) => {
-//   res.send({ message: "This is API main page :)" });
-// });
+router.get("/", async (req, res, next) => {
+  res.send({ message: "This is API main page :)" });
+});
 
-// // To get trending topics
-// router.get("/trends", async (req, res, next) => {
-//     try {
-//         const id = req.query.woeid;
-//         const trends = await twitterClient.get("trends/place.json", {
-//             id,
-//         });
-//
-//         res.status(200).json(trends[0]);
-//     } catch (error) {
-//         next(error);
-//     }
-// });
-// To get trending topics
 router.get("/trends", async (req, res, next) => {
 
     const id = req.query.woeid;
@@ -79,7 +65,7 @@ router.get("/near-me", async (req, res, next) => {
     }
 });
 
-router.post("/api/sentiment", (req, res) => {
+router.post("/sentiment", (req, res) => {
     const data = req.body.data;
     console.log(data);
     const sentiment = getSentiment(data);
