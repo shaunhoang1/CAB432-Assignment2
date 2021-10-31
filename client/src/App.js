@@ -5,16 +5,15 @@ import { useEffect, useState } from "react";
 import getTrends from "./store/getTrends";
 import getTrendsNearMe from "./store/getTrendNearMe";
 import ListTrends from "./components/listTrends";
-import getText from "./store/getText";
 
 function App() {
   const [trends, setTrends] = useState([]);
   const [woeid, setWoeid] = useState("1");
   const [q, setQ] = useState([]);
-
+  const [trendChosen, setTrendChosen] = useState(-1);
   useEffect(() => {
     getTrends(woeid)
-      .then((r) => setTrends(r[0].trends))
+      .then((r) => setTrends(r.trends))
       .catch((err) => console.log(err));
   }, [woeid]);
 
@@ -45,7 +44,10 @@ function App() {
       <div className="menu">
         <select
           name="trending-place"
-          onChange={(e) => setWoeid(e.target.value)}
+          onChange={(e) => {
+            setWoeid(e.target.value);
+            setTrendChosen(-1);
+          }}
         >
           <option value="1">Worldwide</option>
           <option value="23424977">US</option>
@@ -62,7 +64,7 @@ function App() {
           <FaCrosshairs />
         </div>
       </div>
-      <ListTrends trends={trends} />
+      <ListTrends trends={trends} trendChosen={trendChosen} setTrendChosen={setTrendChosen}/>
     </div>
   );
 }

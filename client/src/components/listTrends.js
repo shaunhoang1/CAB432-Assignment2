@@ -1,13 +1,29 @@
 import {Card} from "react-bootstrap";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import PieChart from "./chart";
+import getSentiment from "../store/getSentiment";
 
-export default function ListTrends({trends}) {
+export default function ListTrends({trends, trendChosen, setTrendChosen}) {
     const [cardState, setCardState] = useState(Array(trends.length).fill(false));
-    const [trendChosen, setTrendChosen] = useState(-1);
+
+    const [sentiment, setSentiment] = useState(null);
+    useEffect(() => {
+        setSentiment(null);
+        if (trendChosen !== -1){
+            getSentiment(trends[trendChosen].name)
+                .then((r) => {
+                    setSentiment(r);
+                })
+                .catch((err) => console.log(err));
+        } else {
+            setCardState(Array(trends.length).fill(false));
+        }
+    }, [trendChosen, trends]);
+
     const handleOnClick = (index) => {
         if (index === trendChosen) {
             setTrendChosen(-1);
+            setSentiment(-1);
             setCardState(Array(trends.length).fill(false));
         } else {
             setTrendChosen(index);
@@ -39,9 +55,17 @@ export default function ListTrends({trends}) {
                                     <span className="tweet_volume">{trend.tweet_volume}</span>
                                 )}
                             </li>
-                            <Card aria-disabled={cardState}>
-                                <PieChart/>
-                            </Card>
+                            {!sentiment && (
+                                <h3>
+                                    Loading...
+                                </h3>
+                            )}
+                            {sentiment && (
+                                <Card >
+                                    <PieChart sentiment={sentiment} trend={trend.name}/>
+                                </Card>
+                            )}
+
                         </>
                     );
                 }

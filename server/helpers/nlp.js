@@ -25,20 +25,19 @@ function getSentiment(str) {
   const stopWordsRemoved = stopword.removeStopwords(fixedSpelling);
   console.log("stopWordsRemoved", stopWordsRemoved)
   const analyzed = analyzer.getSentiment(stopWordsRemoved);
-  console.log("result", analyzed)
-  if (analyzed >= 1) return 1; // positive
-  if (analyzed === 0) return 0;
-  return -1;
+  console.log("Score:" ,analyzed);
+  if (Math.round(analyzed) >= 1) return 1; // positive
+  if (Math.round(analyzed) <= -1) return -1; // negative
+  return 0; // neutral
 }
 
 function getSentimentList(tweetList){
   let sentimentList = Array(tweetList.length).fill(null);
 
   tweetList.map((obj, index) => {
-    console.log("???", index)
+    console.log(`Process: ${index}/${tweetList.length}`)
     sentimentList[index] = getSentiment(obj.text)
   })
-  console.log(sentimentList)
   return sentimentList;
 }
 module.exports.getSentiment = getSentiment;
