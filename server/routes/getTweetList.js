@@ -32,7 +32,7 @@ router.get("/search", async (req, res, next) => {
                     'tweets/search/recent',
                     {
                         query,
-                        max_results: 100, // 100 <PROD> || 10: <DEV>
+                        max_results: 10, // 100 <PROD> || 10: <DEV>
                         tweet: {
                             fields: [
                                 'created_at',
