@@ -104,17 +104,19 @@ router.get("/search", async (req, res, next) => {
                         },
                     }
                 );
-                const listSentiments = getSentimentList(data);
-                const result = calculateSentiment(listSentiments);
+                const {sentimentList, averageScore} = getSentimentList(data);
+                const result = calculateSentiment(sentimentList);
 
-                const body = JSON.stringify(result);
+                const outputObject = {result, tweetCount: sentimentList.length, averageScore,averageSentiment:Math.max(...Object.values(sentimentList)) };
+
+                const body = JSON.stringify(outputObject);
                 const objectParams = {Bucket: process.env.AWS_S3_BUCKET_NAME, Key: s3Key, Body: body};
                 const uploadPromise = awsClient.putObject(objectParams).promise();
                 uploadPromise.then(function (data) {
                     console.log("Successfully uploaded data to " + objectParams.Bucket + "/" + objectParams.Key);
                 }).catch(err => console.error(err));
 
-                return res.status(200).json(result);
+                return res.status(200).json(outputObject);
             }
         })
     } catch (error) {

@@ -2,6 +2,7 @@ const aposToLexForm = require("apos-to-lex-form");
 const { WordTokenizer, SentimentAnalyzer, PorterStemmer } = require("natural");
 const SpellCorrector = require("spelling-corrector");
 const stopword = require("stopword");
+const {average} = require("./average");
 
 const analyzer = new SentimentAnalyzer("English", PorterStemmer, "afinn");
 const tokenizer = new WordTokenizer();
@@ -23,22 +24,29 @@ function getSentiment(str) {
   const fixedSpelling = tokenized.map((word) => spellCorrector.correct(word));
 
   const stopWordsRemoved = stopword.removeStopwords(fixedSpelling);
-  console.log("stopWordsRemoved", stopWordsRemoved)
+
   const analyzed = analyzer.getSentiment(stopWordsRemoved);
   console.log("Score:" ,analyzed);
-  if (Math.round(analyzed) >= 1) return 1; // positive
-  if (Math.round(analyzed) <= -1) return -1; // negative
-  return 0; // neutral
+  return analyzed; // neutral
 }
 
 function getSentimentList(tweetList){
   let sentimentList = Array(tweetList.length).fill(null);
-
+  let scoreList = Array(tweetList.length).fill(null);
   tweetList.map((obj, index) => {
     console.log(`Process: ${index}/${tweetList.length}`)
-    sentimentList[index] = getSentiment(obj.text)
+    scoreList[index] = getSentiment(obj.text)
+    if (Math.round(scoreList[index]) >= 1) {
+      sentimentList[index] = 1
+    } // positive
+    else if (Math.round(sentimentList[index]) <= -1) {
+      sentimentList[index] = -1
+    } // negative
+    else{
+      sentimentList[index] = 0
+    }
   })
-  return sentimentList;
+  return {sentimentList, averageScore: average(scoreList)};
 }
 module.exports.getSentiment = getSentiment;
 module.exports.getSentimentList = getSentimentList;
