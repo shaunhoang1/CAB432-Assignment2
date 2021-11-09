@@ -122,6 +122,10 @@ li:hover .tweet_volume {
 
 .chart{
   margin: auto;
-  height: 15%;
-  width: 15%;
+  height: 30%;
+  width: 30%;
+}
+.container {
+  display: grid;
+  grid-template-columns: auto auto auto;
 }
